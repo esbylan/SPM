@@ -7,7 +7,7 @@
 		<style type="text/css">
 			.exercise{
 				display: inline-block;
-				width: 220px;
+				width: 250px;
 				border: 1px solid black;
 				margin: 5px;
 			}
@@ -180,33 +180,48 @@
 				for(i in exer){
 					if((typeof exer[i])=='object'){
 						//获取算式内容
-						console.log(exer[i].getElementsByTagName('label')[0].innerText);
+//						console.log(exer[i].getElementsByTagName('label')[0].innerText);
 						//获取答题框内容
 						var ans = exer[i].getElementsByTagName('input')[0].value;
-					}
+						if(ans.indexOf('\'')!=-1 && ans.indexOf('/')!=-1){
+							var arr =ans.split('\'');
+							var result = parseInt(arr[0])+eval(arr[1]);
+							if(result==eval(exer[i].getElementsByTagName('label')[0].innerText)){
+								rightFun(exer[i]);
+							}else{
+								wrongFun(exer[i]);
+							}
+							
+						}else if(ans.indexOf('/')!=-1){
+							if (eval(ans)==eval(exer[i].getElementsByTagName('label')[0].innerText)) {
+								rightFun(exer[i]);
+							}else{
+								wrongFun(exer[i]);
+							}
+						}else{
+							if(ans==eval(exer[i].getElementsByTagName('label')[0].innerText)){
+								rightFun(exer[i]);
+							}else{
+								wrongFun(exer[i]);
+							}
+						}
+					}		
 				}
 
-				
-				//只在输入框value有值时判断对错
-//				if(e.target.value) {
-//					//判断结果正确
-//					if(e.target.value == e.target.dataset.res) {
-//						e.target.nextSibling.style.display = 'inline';
-//						e.target.nextSibling.nextSibling.style.display = 'none';
-//						$('#right_num span').text($('span.right:visible').length);
-//						$('#wrong_num span').text($('span.wrong:visible').length);
-//					} else {//判断结果错误
-//						e.target.nextSibling.style.display = 'none';
-//						e.target.nextSibling.nextSibling.style.display = 'inline';
-//						$('#right_num span').text($('span.right:visible').length);
-//						$('#wrong_num span').text($('span.wrong:visible').length);
-//					}
-//				} else {//没有值的时候还原样式
-//					e.target.nextSibling.style.display = 'none';
-//					e.target.nextSibling.nextSibling.style.display = 'none';
-//					$('#right_num span').text($('span.right:visible').length);
-//					$('#wrong_num span').text($('span.wrong:visible').length);
-//				}
+				$('#right_num span').text($('span.right:visible').length);
+				$('#wrong_num span').text($('span.wrong:visible').length);
+
+			//正确行为函数
+			function rightFun(ele){
+				ele.getElementsByClassName('right')[0].style.display='inline';
+				ele.getElementsByClassName('wrong')[0].style.display='none';
+				ele.style.borderColor='green';
+			}
+			//错误行为函数
+			function wrongFun(ele){
+				ele.getElementsByClassName('right')[0].style.display='none';
+				ele.getElementsByClassName('wrong')[0].style.display='inline';
+				ele.style.borderColor='red';
 			}
 		</script>
 	</body>
