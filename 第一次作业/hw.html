@@ -4,9 +4,24 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>算术</title>
+		<style type="text/css">
+			.exercise{
+				display: inline-block;
+				width: 220px;
+				border: 1px solid black;
+				margin: 5px;
+			}
+			#sub{
+				display: block;
+				width: 300px;
+				margin: 5px;
+				
+			}
+		</style>
 	</head>
 
 	<body>
+		<div>
 		<label for="">题目数</label>
 		<input type="number" id="ex_n" name="ex_n" />
 		<label for="">数值范围</label>
@@ -15,9 +30,11 @@
 		<div id="right_num">正确数：<span>0</span></div>
 		<div id="wrong_num">错误数：<span>0</span></div>
 		<div id="container"></div>
+		</div>
 		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 		<script type="text/javascript">
 			function subHandle() {
+				document.querySelector('#container').innerHTML ='';
 				//保存题目数
 				var n = document.querySelector('#ex_n').value;
 				//保存范围数
@@ -72,111 +89,124 @@
 
 						}
 						//判断算式结果是否为小数
-						if(eval(equ) != parseInt(eval(equ))) {
-							//结果整数部分
-							var intNum = parseInt(eval(equ));
-							//结果小数部分
-							var decNum = eval(equ) - parseInt(eval(equ));
-							//设置标签
-							var flag = false;
-							//转化小数为分数
-							for(var j = 1; j <= 200; j++) {
-								for(var i = 1; i <= 200; i++) {
-									//正数结果
-									if((j / i).toFixed(8) == decNum.toFixed(8)) {
-										var max_number = j > i ? j : i;
-										for(k = 1; k <= max_number; k++) {
-											//判断约分
-											//可以约分
-											if(((j / k) / (i / k)) == (j / i) && (j / k) == parseInt(j / k) && (i / k) == parseInt(i / k)) {
-												if(intNum) {
-													var strHtml = '<div><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + intNum + '\'' + (j / k) + '/' + (i / k) + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
-												} else {
-													var strHtml = '<div><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + (j / k) + '/' + (i / k) + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
-												}
-												flag = true;
-												break;
-											} else {//不可约分
-												if(intNum) {
-													var strHtml = '<div><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + intNum + '\'' + j + '/' + i + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
-												} else {
-													var strHtml = '<div><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + j + '/' + i + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
-												}
-												flag = true;
-												break;
-											}
-										}
-										break;
-									}
-									//负数结果，具体同上
-									if(-(j / i).toFixed(8) == decNum.toFixed(8)) {
-										var max_number = j > i ? j : i;
-										for(k = 1; k <= max_number; k++) {
-											//判断约分
-											if(((j / k) / (i / k)) == (j / i) && (j / k) == parseInt(j / k) && (i / k) == parseInt(i / k)) {
-												//												console.log((j/k)+'/'+(i/k))
-												if(intNum) {
-													var strHtml = '<div><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + intNum + '\'' + (j / k) + '/' + (i / k) + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
-												} else {
-													var strHtml = '<div><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + '-' + (j / k) + '/' + (i / k) + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
-												}
-												flag = true;
-												break;
-											} else {
-												//												console.log('无法约分：'+(j)+'/'+(i));
-												if(intNum) {
-													var strHtml = '<div><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + intNum + '\'' + j + '/' + i + '" onkeyup="checkHandle(event)"/><span class="res" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
-												} else {
-													var strHtml = '<div><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + '-' + j + '/' + i + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
-												}
-												flag = true;
-												break;
-											}
-										}
-										break;
-									}
-									if(flag) {
-										break;
-									}
-								}
-								if(flag) {
-									break;
-								}
-							}
-						} else {
-							//结果为整数时
-							var strHtml = '<div><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + eval(equ) + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
-						}
+//						if(eval(equ) != parseInt(eval(equ))) {
+//							//结果整数部分
+//							var intNum = parseInt(eval(equ));
+//							//结果小数部分
+//							var decNum = eval(equ) - parseInt(eval(equ));
+//							//设置标签
+//							var flag = false;
+//							//转化小数为分数
+//							for(var j = 1; j <= 200; j++) {
+//								for(var i = 1; i <= 200; i++) {
+//									//正数结果
+//									if((j / i).toFixed(8) == decNum.toFixed(8)) {
+//										var max_number = j > i ? j : i;
+//										for(k = 1; k <= max_number; k++) {
+//											//判断约分
+//											//可以约分
+//											if(((j / k) / (i / k)) == (j / i) && (j / k) == parseInt(j / k) && (i / k) == parseInt(i / k)) {
+//												if(intNum) {
+//													var strHtml = '<div class="exercise"><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + intNum + '\'' + (j / k) + '/' + (i / k) + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
+//												} else {
+//													var strHtml = '<div class="exercise"><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + (j / k) + '/' + (i / k) + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
+//												}
+//												flag = true;
+//												break;
+//											} else {//不可约分
+//												if(intNum) {
+//													var strHtml = '<div class="exercise"><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + intNum + '\'' + j + '/' + i + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
+//												} else {
+//													var strHtml = '<div class="exercise"><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + j + '/' + i + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
+//												}
+//												flag = true;
+//												break;
+//											}
+//										}
+//										break;
+//									}
+//									//负数结果，具体同上
+//									if(-(j / i).toFixed(8) == decNum.toFixed(8)) {
+//										var max_number = j > i ? j : i;
+//										for(k = 1; k <= max_number; k++) {
+//											//判断约分
+//											if(((j / k) / (i / k)) == (j / i) && (j / k) == parseInt(j / k) && (i / k) == parseInt(i / k)) {
+//												//												console.log((j/k)+'/'+(i/k))
+//												if(intNum) {
+//													var strHtml = '<div class="exercise"><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + intNum + '\'' + (j / k) + '/' + (i / k) + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
+//												} else {
+//													var strHtml = '<div class="exercise"><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + '-' + (j / k) + '/' + (i / k) + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
+//												}
+//												flag = true;
+//												break;
+//											} else {
+//												//												console.log('无法约分：'+(j)+'/'+(i));
+//												if(intNum) {
+//													var strHtml = '<div class="exercise"><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + intNum + '\'' + j + '/' + i + '" onkeyup="checkHandle(event)"/><span class="res" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
+//												} else {
+//													var strHtml = '<div class="exercise"><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text" data-res="' + '-' + j + '/' + i + '" onkeyup="checkHandle(event)"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
+//												}
+//												flag = true;
+//												break;
+//											}
+//										}
+//										break;
+//									}
+//									if(flag) {
+//										break;
+//									}
+//								}
+//								if(flag) {
+//									break;
+//								}
+//							}
+//						} else {
+//							//结果为整数时
+//							var strHtml = '<div class="exercise"><label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
+//						}
 						//将算式以及输入框等拼接插入标签中
+						var strHtml ='<div class="exercise">题目'+(current_n+1)+'.&nbsp;<label>' + equ + '</label>' + '=' + '<input style="width:50px" type="text"/><span class="res right" style="color:green; display:none;">正确</span><span class="res wrong" style="color:red; display:none;">错误</span></div>'
 						document.querySelector('#container').innerHTML += strHtml;
 						current_n++;
 					}
 				} else {
 					alert('请输入正确格式的题目数和范围，题目数必须小于10000，范围必须为自然数');
 				}
+				document.querySelector('#container').innerHTML += '<button id="sub" type="button" onclick="checkHandle()">提交</button>'
 			}
 			//判断对错函数
-			function checkHandle(e) {
-				//只在输入框value有值时判断对错
-				if(e.target.value) {
-					//判断结果正确
-					if(e.target.value == e.target.dataset.res) {
-						e.target.nextSibling.style.display = 'inline';
-						e.target.nextSibling.nextSibling.style.display = 'none';
-						$('#right_num span').text($('span.right:visible').length);
-						$('#wrong_num span').text($('span.wrong:visible').length);
-					} else {//判断结果错误
-						e.target.nextSibling.style.display = 'none';
-						e.target.nextSibling.nextSibling.style.display = 'inline';
-						$('#right_num span').text($('span.right:visible').length);
-						$('#wrong_num span').text($('span.wrong:visible').length);
+			function checkHandle() {
+				var exer = document.getElementsByClassName('exercise');
+				for(i in exer){
+					if((typeof exer[i])=='object'){
+						//获取算式内容
+						console.log(exer[i].getElementsByTagName('label')[0].innerText);
+						//获取答题框内容
+						var ans = exer[i].getElementsByTagName('input')[0].value;
 					}
-				} else {//没有值的时候还原样式
-					e.target.nextSibling.style.display = 'none';
-					e.target.nextSibling.nextSibling.style.display = 'none';
-					$('#right_num span').text($('span.right:visible').length);
-					$('#wrong_num span').text($('span.wrong:visible').length);
 				}
+
+				
+				//只在输入框value有值时判断对错
+//				if(e.target.value) {
+//					//判断结果正确
+//					if(e.target.value == e.target.dataset.res) {
+//						e.target.nextSibling.style.display = 'inline';
+//						e.target.nextSibling.nextSibling.style.display = 'none';
+//						$('#right_num span').text($('span.right:visible').length);
+//						$('#wrong_num span').text($('span.wrong:visible').length);
+//					} else {//判断结果错误
+//						e.target.nextSibling.style.display = 'none';
+//						e.target.nextSibling.nextSibling.style.display = 'inline';
+//						$('#right_num span').text($('span.right:visible').length);
+//						$('#wrong_num span').text($('span.wrong:visible').length);
+//					}
+//				} else {//没有值的时候还原样式
+//					e.target.nextSibling.style.display = 'none';
+//					e.target.nextSibling.nextSibling.style.display = 'none';
+//					$('#right_num span').text($('span.right:visible').length);
+//					$('#wrong_num span').text($('span.wrong:visible').length);
+//				}
 			}
 		</script>
 	</body>
