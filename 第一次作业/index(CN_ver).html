@@ -26,12 +26,15 @@
 			<div id="right_num">正确数：<span>0</span></div>
 			<div id="wrong_num">错误数：<span>0</span></div>
 			<div id="timer">用时：00:00:00</div>
-			<table id="exer" class="table table-striped">
+			<table class="table table-striped">
 				<tr>
 					<th>题目</th>
 					<th>答案</th>
 					<th>正确/错误</th>
 				</tr>
+				<tbody id="exer">
+					
+				</tbody>
 			</table>
 		</div>
 		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
@@ -43,7 +46,6 @@
 				startTimer: function() {
 					var timeShow = document.getElementById('timer');
 					this.sec = '0' + 0, this.min = '0' + 0, this.hou = '0' + 0;
-					//					timeShow.innerText = '用时：0' + this.hou + ':0' + this.min + ':0' + this.sec;
 					this.sec = '0' + 1;
 					setTimer = setInterval(function() {
 						timeShow.innerText = '用时：' + this.hou + ':' + this.min + ':' + this.sec;
@@ -69,7 +71,7 @@
 			}
 
 			function subHandle() {
-				document.querySelector('#exer').innerHTML = '<tr><th>题目</th><th>答案</th><th>正确/错误</th></tr>';
+				document.querySelector('#exer').innerHTML = '';
 				//保存题目数
 				var n = document.querySelector('#ex_n').value;
 				//保存范围数
